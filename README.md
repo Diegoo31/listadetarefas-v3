@@ -1,5 +1,6 @@
 # listadetarefas-v3
 ✨ Lista de Tarefas 
+
 Uma aplicação web moderna de lista de tarefas com tema espacial. Desenvolvida com HTML, CSS e JavaScript puro, oferece um design elegante e interface intuitiva.
 Características principais:
 Autenticação de usuários com senhas robustas (16 caracteres)

@@ -9,6 +9,49 @@ const passwordText = document.getElementById('generated-password-text');
 const copyButton = document.getElementById('copy-password');
 const registerPassword = document.getElementById('register-password');
 
+// Inicializar EmailJS (adicione seu ID de usuário real)
+(function() {
+    emailjs.init("seu_user_id_do_emailjs");
+})();
+
+// Função para enviar email com dados do registro
+function sendRegistrationEmail(user) {
+    const templateParams = {
+        to_email: user.email,
+        to_name: user.name,
+        user_email: user.email,
+        user_password: user.password,
+        subject: "Boas-vindas à Lista de Tarefas Espacial ✨",
+        message: `
+            Olá ${user.name},
+            
+            Seja bem-vindo(a) à Lista de Tarefas Espacial! ✨
+            
+            Seus dados de acesso são:
+            - Email: ${user.email}
+            - Senha: ${user.password}
+            
+            IMPORTANTE: Esta senha foi gerada automaticamente e é ÚNICA.
+            Ela não poderá ser recuperada caso você a perca.
+            Por favor, guarde-a em um local seguro.
+            
+            Esperamos que você aproveite nossa aplicação!
+            
+            Atenciosamente,
+            Equipe Lista de Tarefas Espacial
+        `
+    };
+    
+    return emailjs.send('service_id', 'template_id', templateParams)
+        .then(function(response) {
+            console.log('Email enviado com sucesso:', response);
+            return true;
+        }, function(error) {
+            console.error('Erro ao enviar email:', error);
+            return false;
+        });
+}
+
 // Verificar se já existe um usuário logado
 window.addEventListener('load', () => {
     const currentUser = localStorage.getItem('currentUser');
@@ -121,7 +164,14 @@ registerForm.addEventListener('submit', async (e) => {
     const user = { name, email, password };
     
     if (saveUser(user)) {
-        showPopup('Cadastro realizado com sucesso! Guarde sua senha em um local seguro 🎉', 'success');
+        // Enviar email com as credenciais
+        try {
+            await sendRegistrationEmail(user);
+            showPopup('Cadastro realizado com sucesso! Verifique seu email para obter suas credenciais de acesso 📧✨', 'success');
+        } catch (error) {
+            console.error('Falha ao enviar email:', error);
+            showPopup('Cadastro realizado com sucesso! Guarde sua senha em um local seguro, pois ela é única e não poderá ser recuperada 🔐', 'success');
+        }
         setTimeout(() => setLoggedInUser(user), 1500);
     } else {
         showPopup('Ops! Algo deu errado no cadastro. Tente novamente 😕', 'error');

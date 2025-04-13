@@ -8,7 +8,6 @@ const passwordDisplay = document.querySelector('.generated-password-display');
 const passwordText = document.getElementById('generated-password-text');
 const copyButton = document.getElementById('copy-password');
 const registerPassword = document.getElementById('register-password');
-const clearDataButton = document.getElementById('clear-data-button');
 
 // Verificar se já existe um usuário logado
 window.addEventListener('load', () => {
@@ -149,38 +148,4 @@ loginForm.addEventListener('submit', (e) => {
     }
     
     setLoggedInUser(user);
-});
-
-// Função para limpar todos os dados
-async function clearAllData() {
-    const confirmed = await confirmPopup('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita! 🤔');
-    
-    if (confirmed) {
-        try {
-            // Limpar usuários
-            localStorage.removeItem('users');
-            // Limpar senhas geradas
-            localStorage.removeItem('generatedPasswords');
-            // Limpar usuário atual
-            localStorage.removeItem('currentUser');
-            // Limpar tarefas de todos os usuários
-            const allKeys = Object.keys(localStorage);
-            allKeys.forEach(key => {
-                if (key.startsWith('tasks_')) {
-                    localStorage.removeItem(key);
-                }
-            });
-            
-            showPopup('Todos os dados foram limpos com sucesso! 🧹', 'success');
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
-        } catch (error) {
-            console.error('Erro ao limpar dados:', error);
-            showPopup('Ops! Algo deu errado ao limpar os dados 😕', 'error');
-        }
-    }
-}
-
-// Evento para limpar dados
-clearDataButton.addEventListener('click', clearAllData); 
+}); 

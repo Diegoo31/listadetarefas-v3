@@ -267,36 +267,17 @@ body.login-page .register-link a:hover {
     text-decoration: underline;
 }
 
-/* Ajustes para o botão de limpar dados */
+/* Remover estilos relacionados ao botão de limpar dados */
 body.login-page .clear-data {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: center;
-    width: 100%;
+    display: none;
 }
 
 body.login-page #clear-data-button {
-    background: linear-gradient(45deg, #ff3366, #ff5e62);
-    border: none;
-    border-radius: 8px;
-    padding: 7px 15px;
-    color: #fff;
-    font-size: 0.8em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    max-width: 200px;
-}
-
-body.login-page #clear-data-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+    display: none;
 }
 
 body.login-page .clear-info {
-    font-size: 0.7em;
-    color: rgba(255, 255, 255, 0.5);
-    margin-top: 5px;
+    display: none;
 }
 
 /* Responsividade aprimorada para telas menores */

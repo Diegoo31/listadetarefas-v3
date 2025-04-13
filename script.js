@@ -2,7 +2,7 @@
 function checkAuth() {
     const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
-        alert('Por favor, faça login para acessar sua lista de tarefas.');
+        // Redirecionar para a página de login sem exibir alerta
         window.location.href = 'login.html';
         return false;
     }

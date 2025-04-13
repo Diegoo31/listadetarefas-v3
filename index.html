@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Lista de tarefas moderna com efeitos 3D">
     <meta name="theme-color" content="#2c3e50">
     <title>✨ Lista de Tarefas 3D</title>
@@ -15,7 +15,7 @@
         function checkInitialAuth() {
             const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
-                alert('Por favor, faça login para acessar sua lista de tarefas.');
+                // Redirecionar para a página de login sem exibir alerta
                 window.location.href = 'login.html';
                 return false;
             }

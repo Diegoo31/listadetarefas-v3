@@ -9,6 +9,7 @@ body {
     background: linear-gradient(45deg, #1a1a1a, #2c3e50);
     perspective: 1000px;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Estrelas cintilantes */
@@ -144,6 +145,8 @@ body {
     transform-style: preserve-3d;
     animation: float 6s ease-in-out infinite;
     border: 1px solid rgba(0, 255, 157, 0.1);
+    max-height: 85vh;
+    overflow-y: auto;
 }
 
 @keyframes float {
@@ -229,6 +232,10 @@ h1::after {
 #task-list {
     list-style: none;
     padding: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 5px;
+    padding-bottom: 15px;
 }
 
 .task-item {
@@ -853,6 +860,13 @@ h1::after {
     font-size: 1.2em;
     font-weight: 600;
     border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+    position: sticky;
+    top: 0;
+    background: rgba(30, 39, 46, 0.9);
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    border-radius: 8px 8px 0 0;
+    padding-top: 5px;
 }
 
 /* Estilo para tarefas próximas do prazo */
@@ -928,5 +942,226 @@ h1::after {
     .small-planet {
         width: 70px;
         height: 70px;
+    }
+    
+    .container {
+        width: 95%;
+        padding: 20px;
+        margin: 10px auto;
+        max-height: 80vh;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .add-task {
+        flex-direction: column;
+    }
+    
+    #task-input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    #add-button {
+        width: 100%;
+    }
+    
+    .task-item {
+        flex-direction: column;
+    }
+    
+    .task-buttons {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .user-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .action-controls {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    #logout-button, #group-button, #sort-button {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+}
+
+/* Smartphones pequenos */
+@media (max-width: 480px) {
+    body {
+        padding: 10px 0;
+    }
+    
+    .container {
+        width: 100%;
+        padding: 15px;
+        border-radius: 15px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    
+    .task-buttons {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .delete-button, .share-button, .date-button {
+        padding: 6px 8px;
+        font-size: 0.8em;
+    }
+    
+    .task-date {
+        font-size: 0.8em;
+    }
+    
+    .task-text {
+        font-size: 0.95em;
+    }
+    
+    #task-input {
+        font-size: 0.95em;
+        padding: 12px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+    }
+    
+    .header-container {
+        margin-bottom: 15px;
+    }
+    
+    .planet, .planet-ring {
+        opacity: 0.4;
+    }
+}
+
+/* Ajustes para telas maiores */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 800px;
+    }
+    
+    #task-input {
+        font-size: 1.1em;
+    }
+    
+    .task-text {
+        font-size: 1.05em;
+    }
+    
+    .task-item {
+        padding: 15px 20px;
+    }
+}
+
+/* Ajustes para orientação paisagem em dispositivos móveis */
+@media (max-height: 600px) and (orientation: landscape) {
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .container {
+        margin: 5px auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .planet, .planet-ring, .small-planet {
+        opacity: 0.3;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+    
+    .user-info {
+        flex-direction: row;
+    }
+}
+
+/* Garantir que inputs e botões sejam facilmente tocáveis em dispositivos móveis */
+@media (hover: none) and (pointer: coarse) {
+    button, 
+    .date-button, 
+    .delete-button, 
+    .share-button, 
+    #add-button, 
+    #logout-button, 
+    #group-button, 
+    #sort-button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    input[type="text"], 
+    input[type="email"], 
+    input[type="password"] {
+        font-size: 16px;
+        min-height: 44px;
+    }
+    
+    .task-item {
+        padding: 12px;
+    }
+}
+
+/* Estilizando a barra de rolagem para o tema espacial */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(15, 32, 39, 0.8);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #00ff9d, #00b8ff);
+    border-radius: 10px;
+    border: 2px solid rgba(15, 32, 39, 0.8);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #00b8ff, #00ff9d);
+}
+
+/* Estilização para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #00ff9d rgba(15, 32, 39, 0.8);
+}
+
+/* Definir altura máxima para os containers quando há muitos elementos */
+@media (min-height: 800px) {
+    .container {
+        max-height: 75vh;
+    }
+}
+
+@media (max-height: 600px) {
+    #task-list {
+        max-height: 50vh;
+    }
+    
+    body.login-page .container {
+        max-height: 85vh;
     }
 }

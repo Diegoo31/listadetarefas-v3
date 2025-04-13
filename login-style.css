@@ -4,7 +4,8 @@ body.login-page {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -148,8 +149,10 @@ body.login-page .container {
     border-radius: 15px;
     position: relative;
     z-index: 10;
-    overflow: hidden;
+    overflow-y: auto;
+    max-height: 85vh;
     box-sizing: border-box;
+    margin: 20px 0;
 }
 
 /* Ajustes para o título */
@@ -296,15 +299,132 @@ body.login-page .clear-info {
     margin-top: 5px;
 }
 
-/* Responsividade para telas menores */
+/* Responsividade aprimorada para telas menores */
 @media (max-width: 500px) {
     body.login-page .container {
-        margin: 40px 20px;
+        margin: 20px;
         padding: 20px;
+        width: calc(100% - 40px);
+        max-width: none;
     }
     
     body.login-page h1 {
         font-size: 1.8em;
+    }
+    
+    body.login-page .form-group input {
+        padding: 14px;
+        font-size: 1em;
+    }
+    
+    body.login-page #login-button,
+    body.login-page #register-button {
+        padding: 14px;
+        font-size: 0.9em;
+    }
+    
+    body.login-page .password-group {
+        flex-direction: column;
+    }
+    
+    body.login-page .generate-button {
+        margin-top: 8px;
+        width: 100%;
+        padding: 10px;
+    }
+    
+    .password-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .copy-button {
+        width: 100%;
+        padding: 8px;
+    }
+    
+    /* Ajustar elementos espaciais para não sobrecarregar a tela */
+    .planet {
+        opacity: 0.4;
+        width: 150px;
+        height: 150px;
+        right: -50px;
+        top: -50px;
+    }
+    
+    .planet-ring {
+        opacity: 0.4;
+        width: 220px;
+        height: 40px;
+        right: -60px;
+        top: 20px;
+    }
+}
+
+/* Ajustes específicos para smartphones muito pequenos */
+@media (max-width: 360px) {
+    body.login-page .container {
+        margin: 10px;
+        padding: 15px;
+        width: calc(100% - 20px);
+    }
+    
+    body.login-page h1 {
+        font-size: 1.5em;
+    }
+    
+    body.login-page .password-info {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    body.login-page .password-info li {
+        font-size: 0.85em;
+    }
+}
+
+/* Ajustes para telas maiores */
+@media (min-width: 1200px) {
+    body.login-page .container {
+        max-width: 500px;
+    }
+}
+
+/* Ajustes para orientação paisagem em dispositivos móveis */
+@media (max-height: 600px) and (orientation: landscape) {
+    body.login-page {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+    }
+    
+    body.login-page .container {
+        margin: 10px auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .planet, .planet-ring, .small-planet {
+        opacity: 0.3;
+    }
+}
+
+/* Garantir que inputs e botões sejam facilmente tocáveis em dispositivos móveis */
+@media (hover: none) and (pointer: coarse) {
+    body.login-page button, 
+    body.login-page input[type="submit"],
+    body.login-page #login-button,
+    body.login-page #register-button,
+    body.login-page .generate-button,
+    body.login-page .copy-button {
+        min-height: 44px;
+    }
+    
+    body.login-page input[type="text"], 
+    body.login-page input[type="email"], 
+    body.login-page input[type="password"] {
+        font-size: 16px; /* Evita zoom automático em iPhones */
+        min-height: 44px;
     }
 }
 
@@ -381,6 +501,8 @@ body.login-page .clear-info {
     border-radius: 10px;
     margin-top: 10px;
     border: 1px solid rgba(0, 255, 157, 0.1);
+    max-height: 40vh;
+    overflow-y: auto;
 }
 
 #register-form .password-info p {
@@ -424,6 +546,8 @@ body.login-page .clear-info {
     flex: 1;
     overflow-x: auto;
     white-space: nowrap;
+    max-width: 100%;
+    scrollbar-width: thin;
 }
 
 .copy-button {
@@ -484,4 +608,39 @@ body.login-page .clear-info {
     padding: 2px 8px;
     border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Ajustes para telas menores */
+@media (max-height: 700px) {
+    body.login-page .container {
+        max-height: 80vh;
+        margin: 15px 0;
+    }
+}
+
+/* Estilizando a barra de rolagem para o tema espacial */
+body.login-page ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.login-page ::-webkit-scrollbar-track {
+    background: rgba(15, 32, 39, 0.8);
+    border-radius: 10px;
+}
+
+body.login-page ::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #00ff9d, #00b8ff);
+    border-radius: 10px;
+    border: 2px solid rgba(15, 32, 39, 0.8);
+}
+
+body.login-page ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #00b8ff, #00ff9d);
+}
+
+/* Estilização para Firefox */
+body.login-page * {
+    scrollbar-width: thin;
+    scrollbar-color: #00ff9d rgba(15, 32, 39, 0.8);
 } 

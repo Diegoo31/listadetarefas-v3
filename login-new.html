@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login - Lista de tarefas moderna com efeitos 3D">
+    <meta name="theme-color" content="#2c3e50">
+    <title>✨ Lista de Tarefas 3D</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        // Verificar se já existe um usuário logado
+        function checkLoggedIn() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                window.location.href = 'index.html';
+                return true;
+            }
+            return false;
+        }
+        
+        // Executar verificação imediatamente
+        checkLoggedIn();
+    </script>
+</head>
+<body class="login-page">
+    <!-- Elementos decorativos do tema espacial -->
+    <div class="stars" id="stars"></div>
+    <div class="planet"></div>
+    <div class="planet-ring"></div>
+    <div class="small-planet"></div>
+    <div class="meteor" id="meteor1"></div>
+    <div class="meteor" id="meteor2"></div>
+    
+    <div class="container login-container">
+        <h1>✨ Lista de Tarefas Espacial</h1>
+        <form id="login-form" class="login-form">
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Seu e-mail" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Sua senha" required>
+            </div>
+            <button type="submit" id="login-button">Entrar</button>
+            <p class="register-link">
+                Não tem uma conta? <a href="#" id="register-link">Registre-se</a>
+            </p>
+        </form>
+        <form id="register-form" class="login-form" style="display: none;">
+            <div class="form-group">
+                <input type="text" id="register-name" placeholder="Seu nome" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="register-email" placeholder="Seu e-mail" required>
+            </div>
+            <div class="form-group password-group">
+                <input type="password" id="register-password" placeholder="Sua senha" required readonly>
+                <button type="button" id="generate-password" class="generate-button">Gerar Senha</button>
+            </div>
+            <div class="password-info">
+                <p>Por segurança, apenas senhas geradas pelo sistema são permitidas.</p>
+                <p>Sua senha será gerada automaticamente e conterá:</p>
+                <ul>
+                    <li>12 caracteres</li>
+                    <li>Letras maiúsculas e minúsculas</li>
+                    <li>Números</li>
+                    <li>Símbolos especiais</li>
+                </ul>
+                <div class="generated-password-display" style="display: none;">
+                    <p>Sua senha gerada:</p>
+                    <div class="password-container">
+                        <span id="generated-password-text"></span>
+                        <button type="button" id="copy-password" class="copy-button">Copiar</button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="register-button">Registrar</button>
+            <p class="register-link">
+                Já tem uma conta? <a href="#" id="login-link">Faça login</a>
+            </p>
+        </form>
+        <div class="clear-data">
+            <button type="button" id="clear-data-button">Limpar Todos os Dados</button>
+            <p class="clear-info">Isso irá remover todos os cadastros e senhas</p>
+        </div>
+    </div>
+    
+    <script src="password-generator.js"></script>
+    <script src="popup.js"></script>
+    <script src="space-effects.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html> 

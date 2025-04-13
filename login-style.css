@@ -1,0 +1,487 @@
+/* Estilos específicos para a página de login com tema espacial */
+body.login-page {
+    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estrelas cintilantes */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle 4s infinite;
+    box-shadow: 0 0 4px #fff;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* Planeta decorativo */
+.planet {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, 
+        #4b6cb7 0%, 
+        #182848 30%, 
+        #0f2027 70%);
+    box-shadow: 0 0 50px rgba(0, 255, 157, 0.3), 
+                inset 20px -20px 50px rgba(0, 0, 0, 0.5);
+    right: -80px;
+    top: -80px;
+    z-index: -1;
+    animation: planet-float 15s infinite linear;
+}
+
+/* Crateras no planeta */
+.planet::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    top: 30%;
+    left: 25%;
+    box-shadow: 
+        70px 40px 0 -5px rgba(255, 255, 255, 0.05),
+        120px 80px 0 -10px rgba(255, 255, 255, 0.08),
+        160px 30px 0 -3px rgba(255, 255, 255, 0.07),
+        180px 120px 0 -8px rgba(255, 255, 255, 0.06);
+}
+
+.planet-ring {
+    position: fixed;
+    width: 460px;
+    height: 100px;
+    border-radius: 50%;
+    border: 15px solid rgba(0, 255, 157, 0.1);
+    right: -150px;
+    top: 20px;
+    transform: rotate(-30deg);
+    z-index: -1;
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+}
+
+/* Camada adicional do anel */
+.planet-ring::before {
+    content: '';
+    position: absolute;
+    width: 430px;
+    height: 70px;
+    border-radius: 50%;
+    border: 5px solid rgba(0, 150, 255, 0.1);
+    top: 10px;
+    left: 10px;
+}
+
+@keyframes planet-float {
+    0% { transform: rotate(0deg) translateY(0); }
+    50% { transform: rotate(5deg) translateY(-20px); }
+    100% { transform: rotate(0deg) translateY(0); }
+}
+
+/* Meteoros ocasionais */
+.meteor {
+    position: fixed;
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 40%, rgba(255, 255, 255, 0));
+    animation: meteor 3s linear infinite;
+    z-index: -1;
+    opacity: 0;
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px #fff;
+}
+
+@keyframes meteor {
+    0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) rotate(45deg);
+    }
+    10% {
+        opacity: 1;
+    }
+    30% {
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-500px) translateY(500px) rotate(45deg);
+    }
+}
+
+/* Ajustes para o container de login */
+body.login-page .container {
+    background: rgba(30, 39, 46, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 157, 0.1);
+    box-shadow: 0 0 30px rgba(0, 255, 157, 0.1);
+    max-width: 450px;
+    width: 90%;
+    padding: 25px 25px 20px;
+    border-radius: 15px;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Ajustes para o título */
+body.login-page h1 {
+    color: #00ff9d;
+    text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+    text-align: center;
+    margin: 0 0 25px 0;
+    font-size: 1.9em;
+    position: relative;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    white-space: nowrap;
+}
+
+body.login-page h1 .title-text {
+    margin-bottom: 15px;
+    display: block;
+}
+
+body.login-page h1 .title-line {
+    display: block;
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff9d, #00b8ff, transparent);
+}
+
+/* Melhorias para o formulário de login */
+body.login-page .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Ajustes para os campos de formulário */
+body.login-page .form-group {
+    position: relative;
+    width: 100%;
+}
+
+body.login-page .form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(0, 255, 157, 0.3);
+    border-radius: 8px;
+    background: rgba(15, 32, 39, 0.8);
+    color: #fff;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+
+body.login-page .form-group input:focus {
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+    background: rgba(15, 32, 39, 0.9);
+    outline: none;
+    border-color: #00ff9d;
+}
+
+body.login-page .form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Ajuste para os botões */
+body.login-page #login-button,
+body.login-page #register-button {
+    background: linear-gradient(45deg, #00ff9d, #00b8ff);
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+    border: none;
+    border-radius: 8px;
+    padding: 14px 15px;
+    color: #000 !important;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+body.login-page #login-button:hover,
+body.login-page #register-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
+}
+
+/* Ajustes para links */
+body.login-page .register-link {
+    text-align: center;
+    margin-top: 10px;
+    color: #fff;
+    font-size: 0.85em;
+    padding-bottom: 5px;
+}
+
+body.login-page .register-link a {
+    color: #00ff9d;
+    text-shadow: 0 0 5px rgba(0, 255, 157, 0.3);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+body.login-page .register-link a:hover {
+    color: #00b8ff;
+    text-decoration: underline;
+}
+
+/* Ajustes para o botão de limpar dados */
+body.login-page .clear-data {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    width: 100%;
+}
+
+body.login-page #clear-data-button {
+    background: linear-gradient(45deg, #ff3366, #ff5e62);
+    border: none;
+    border-radius: 8px;
+    padding: 7px 15px;
+    color: #fff;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    max-width: 200px;
+}
+
+body.login-page #clear-data-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+}
+
+body.login-page .clear-info {
+    font-size: 0.7em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 5px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 500px) {
+    body.login-page .container {
+        margin: 40px 20px;
+        padding: 20px;
+    }
+    
+    body.login-page h1 {
+        font-size: 1.8em;
+    }
+}
+
+/* Planeta pequeno decorativo no canto oposto */
+.small-planet {
+    content: '';
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, 
+        #ff6b6b 0%, 
+        #a83232 40%, 
+        #6e1c1c 100%);
+    box-shadow: 0 0 30px rgba(255, 107, 107, 0.4), 
+                inset 10px -10px 20px rgba(0, 0, 0, 0.5);
+    bottom: -30px;
+    left: -30px;
+    z-index: -1;
+    opacity: 0.7;
+}
+
+/* Responsividade para o tema espacial */
+@media (max-width: 768px) {
+    .planet {
+        width: 200px;
+        height: 200px;
+        right: -70px;
+        top: -70px;
+    }
+    
+    .planet-ring {
+        width: 300px;
+        height: 60px;
+        right: -120px;
+        top: 5px;
+    }
+    
+    .small-planet {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* Ajustes para o formulário de cadastro */
+#register-form .password-group {
+    display: flex;
+    gap: 10px;
+}
+
+#register-form .password-group input {
+    flex: 1;
+}
+
+#register-form .generate-button {
+    background: linear-gradient(45deg, #9900ff, #00b8ff);
+    border: none;
+    border-radius: 8px;
+    padding: 0 15px;
+    color: #000 !important;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+#register-form .generate-button:hover {
+    box-shadow: 0 0 15px rgba(153, 0, 255, 0.4);
+}
+
+#register-form .password-info {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 1px solid rgba(0, 255, 157, 0.1);
+}
+
+#register-form .password-info p {
+    margin: 0 0 10px 0;
+    font-size: 0.9em;
+}
+
+#register-form .password-info ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+#register-form .password-info li {
+    font-size: 0.85em;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Estilo do display de senha gerada */
+.generated-password-display {
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+#generated-password-text {
+    font-family: monospace;
+    font-size: 1.1em;
+    color: #00ff9d;
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.copy-button {
+    background: linear-gradient(45deg, #00b8ff, #00ff9d);
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 184, 255, 0.4);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 400px) {
+    body.login-page .container {
+        padding: 20px 20px 15px;
+    }
+    
+    body.login-page h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+    
+    body.login-page .login-form {
+        gap: 12px;
+    }
+    
+    body.login-page .form-group input {
+        padding: 12px 14px;
+    }
+    
+    body.login-page #login-button,
+    body.login-page #register-button {
+        padding: 12px;
+    }
+}
+
+/* Estilo para exibição da força da senha */
+.password-strength-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.password-strength-container p {
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#password-strength {
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.2);
+} 

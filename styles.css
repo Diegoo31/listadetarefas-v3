@@ -1,0 +1,132 @@
+.custom-popup {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    min-width: 300px;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.custom-popup.show {
+    transform: translateX(0);
+}
+
+.popup-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.popup-icon {
+    font-size: 1.5em;
+}
+
+.popup-message {
+    color: #fff;
+    margin: 0;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+.popup-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00ff9d, #00b8ff);
+    width: 100%;
+    animation: progress 3s linear forwards;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* Estilos específicos por tipo */
+.custom-popup.success {
+    border-left: 4px solid #00ff9d;
+}
+
+.custom-popup.error {
+    border-left: 4px solid #ff3366;
+}
+
+.custom-popup.warning {
+    border-left: 4px solid #ffbb00;
+}
+
+.custom-popup.info {
+    border-left: 4px solid #00b8ff;
+}
+
+/* Popup de confirmação */
+.custom-popup.confirm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    min-width: 300px;
+    max-width: 400px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.custom-popup.confirm.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.popup-buttons button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+}
+
+.confirm-yes {
+    background: linear-gradient(45deg, #00ff9d, #00b8ff);
+    color: #fff;
+}
+
+.confirm-no {
+    background: linear-gradient(45deg, #ff3366, #ff0055);
+    color: #fff;
+}
+
+.popup-buttons button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+}
+
+.confirm-no:hover {
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.4);
+}

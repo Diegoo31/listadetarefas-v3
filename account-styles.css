@@ -1,0 +1,39 @@
+/* Estilos para sobrescrever o botão de excluir conta */
+.delete-account-button {
+    margin-top: 0 !important;
+    padding: 8px 15px !important;
+    background: linear-gradient(45deg, #ff3366, #ff0055) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.9em !important;
+    display: inline-block !important;
+    width: auto !important;
+}
+
+.delete-account-button:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.4) !important;
+}
+
+/* Garantir que o botão se alinhe bem em telas pequenas */
+@media (max-width: 768px) {
+    .delete-account-button {
+        padding: 8px 10px !important;
+        font-size: 0.9em !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .action-controls {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    
+    .delete-account-button {
+        margin-top: 5px !important;
+    }
+} 

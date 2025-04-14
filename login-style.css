@@ -624,4 +624,136 @@ body.login-page ::-webkit-scrollbar-thumb:hover {
 body.login-page * {
     scrollbar-width: thin;
     scrollbar-color: #00ff9d rgba(15, 32, 39, 0.8);
+}
+
+/* Estilos para a caixa de credenciais de demonstração */
+.demo-credentials {
+    display: none;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 255, 157, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+    }
+}
+
+/* Estilos para o popup de credenciais após o registro */
+.credentials-info {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.credentials-popup {
+    background: rgba(30, 39, 46, 0.95);
+    border: 2px solid #00ff9d;
+    border-radius: 15px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0, 255, 157, 0.5);
+    animation: popup-appear 0.5s ease;
+}
+
+.credentials-popup h3 {
+    color: #00ff9d;
+    margin: 0 0 20px 0;
+    font-size: 1.5em;
+}
+
+.credentials-popup p {
+    margin: 10px 0;
+    color: #fff;
+    font-size: 1.1em;
+}
+
+.credentials-popup strong {
+    color: #00ff9d;
+}
+
+.credentials-popup .warning {
+    color: #ff3366;
+    font-weight: bold;
+    margin: 20px 0;
+    font-size: 0.9em;
+    background: rgba(255, 51, 102, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 51, 102, 0.3);
+}
+
+.credentials-confirm {
+    background: linear-gradient(45deg, #00ff9d, #00b8ff);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin-top: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.credentials-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+}
+
+@keyframes popup-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Estilos para a mensagem de confirmação de registro */
+.register-confirmation {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.confirmation-message {
+    background: rgba(0, 255, 157, 0.1);
+    border: 1px solid rgba(0, 255, 157, 0.4);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    animation: confirmation-glow 2s infinite alternate;
+}
+
+.confirmation-message p {
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95em;
+}
+
+.confirmation-message p:first-child {
+    color: #00ff9d;
+    font-weight: bold;
+    font-size: 1.05em;
+}
+
+@keyframes confirmation-glow {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 255, 157, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(0, 255, 157, 0.5);
+    }
 } 

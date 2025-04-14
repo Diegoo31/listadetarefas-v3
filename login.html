@@ -96,5 +96,42 @@
     <script src="popup.js"></script>
     <script src="space-effects.js"></script>
     <script src="auth.js"></script>
+    <script>
+        // Verificar se o usuário acabou de excluir a conta
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('accountDeleted') === 'true') {
+                // Limpar a flag para não mostrar a mensagem novamente
+                sessionStorage.removeItem('accountDeleted');
+                
+                // Mostrar mensagem ao usuário
+                const loginContainer = document.querySelector('.login-container');
+                const confirmMessage = document.createElement('div');
+                confirmMessage.className = 'register-confirmation';
+                confirmMessage.innerHTML = `
+                    <div class="confirmation-message" style="border-color: #ff3366;">
+                        <p>✅ Sua conta foi excluída com sucesso.</p>
+                        <p>Você precisará se registrar novamente para utilizar o sistema.</p>
+                    </div>
+                `;
+                
+                // Inserir a mensagem antes do formulário de login
+                if (loginContainer) {
+                    loginContainer.insertBefore(confirmMessage, loginContainer.firstChild);
+                }
+                
+                // Também mostrar um popup
+                if (typeof showPopup === 'function') {
+                    showPopup('Conta excluída com sucesso! Se desejar usar o sistema novamente, será necessário criar uma nova conta.', 'success', 5000);
+                }
+                
+                // Remover a mensagem após 10 segundos
+                setTimeout(() => {
+                    if (confirmMessage.parentNode) {
+                        confirmMessage.parentNode.removeChild(confirmMessage);
+                    }
+                }, 10000);
+            }
+        });
+    </script>
 </body>
 </html> 

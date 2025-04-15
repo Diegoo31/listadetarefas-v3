@@ -9,11 +9,6 @@ const passwordText = document.getElementById('generated-password-text');
 const copyButton = document.getElementById('copy-password');
 const registerPassword = document.getElementById('register-password');
 
-// Inicializar EmailJS (adicione seu ID de usuário real)
-(function() {
-    emailjs.init("seu_user_id_do_emailjs");
-})();
-
 // Verificar integridade do localStorage
 function checkLocalStorageIntegrity() {
     try {
@@ -36,44 +31,6 @@ function checkLocalStorageIntegrity() {
         console.error('Erro ao verificar localStorage:', error);
         return false;
     }
-}
-
-// Função para enviar email com dados do registro
-function sendRegistrationEmail(user) {
-    const templateParams = {
-        to_email: user.email,
-        to_name: user.name,
-        user_email: user.email,
-        user_password: user.password,
-        subject: "Boas-vindas à Lista de Tarefas Espacial ✨",
-        message: `
-            Olá ${user.name},
-            
-            Seja bem-vindo(a) à Lista de Tarefas Espacial! ✨
-            
-            Seus dados de acesso são:
-            - Email: ${user.email}
-            - Senha: ${user.password}
-            
-            IMPORTANTE: Esta senha foi gerada automaticamente e é ÚNICA.
-            Ela não poderá ser recuperada caso você a perca.
-            Por favor, guarde-a em um local seguro.
-            
-            Esperamos que você aproveite nossa aplicação!
-            
-            Atenciosamente,
-            Equipe Lista de Tarefas Espacial
-        `
-    };
-    
-    return emailjs.send('service_id', 'template_id', templateParams)
-        .then(function(response) {
-            console.log('Email enviado com sucesso:', response);
-            return true;
-        }, function(error) {
-            console.error('Erro ao enviar email:', error);
-            return false;
-        });
 }
 
 // Executar verificação de localStorage ao carregar a página
@@ -232,102 +189,7 @@ function setLoggedInUser(user) {
 }
 
 // Registro de novo usuário
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const name = document.getElementById('register-name').value.trim();
-    const email = document.getElementById('register-email').value.trim();
-    const password = registerPassword.value;
-    
-    // Validações
-    if (!name || !email || !password) {
-        showPopup('Por favor, preencha todos os campos! 📝', 'warning');
-        return;
-    }
-    
-    if (!isGeneratedPassword(password)) {
-        showPopup('Use o botão "Gerar Senha" para criar uma senha segura! 🔒', 'warning');
-        return;
-    }
-    
-    if (findUser(email)) {
-        showPopup('Este e-mail já está cadastrado! Tente fazer login 📧', 'error');
-        return;
-    }
-    
-    const user = { name, email, password };
-    
-    // Tentar salvar usuário
-    const saveSuccess = saveUser(user);
-    
-    if (saveSuccess) {
-        // Mostrar informação para o usuário anotar suas credenciais
-        const credentialInfo = document.createElement('div');
-        credentialInfo.className = 'credentials-info';
-        credentialInfo.innerHTML = `
-            <div class="credentials-popup">
-                <h3>Suas credenciais de acesso</h3>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Senha:</strong> ${password}</p>
-                <p class="warning">IMPORTANTE: Anote estas informações! Elas não poderão ser recuperadas.</p>
-                <button id="confirm-credentials" class="credentials-confirm">Anotei minhas credenciais</button>
-            </div>
-        `;
-        
-        document.body.appendChild(credentialInfo);
-        
-        // Adicionar evento para confirmar que as credenciais foram salvas
-        document.getElementById('confirm-credentials').addEventListener('click', () => {
-            credentialInfo.remove();
-            
-            // Enviar email com as credenciais (se configurado)
-            try {
-                sendRegistrationEmail(user).then(() => {
-                    showPopup('Email com suas credenciais enviado! Verifique sua caixa de entrada 📧✨', 'success');
-                }).catch(() => {
-                    console.error('Falha ao enviar email');
-                });
-            } catch (error) {
-                console.error('Erro ao enviar email:', error);
-            }
-            
-            // Redirecionar para a página de login após o registro
-            showPopup('Cadastro realizado com sucesso! Redirecionando para o login... 🎉', 'success');
-            
-            // Mostrar os formulários de registro e login
-            registerForm.style.display = 'none';
-            loginForm.style.display = 'flex';
-            
-            // Preencher o campo de email para facilitar o login
-            document.getElementById('email').value = email;
-            document.getElementById('password').value = '';
-            document.getElementById('password').focus();
-            
-            // Adicionar mensagem de confirmação acima do formulário de login
-            const loginContainer = document.querySelector('.login-container');
-            const confirmMessage = document.createElement('div');
-            confirmMessage.className = 'register-confirmation';
-            confirmMessage.innerHTML = `
-                <div class="confirmation-message">
-                    <p>✅ Seu cadastro foi realizado com sucesso!</p>
-                    <p>Por favor, faça login com suas credenciais.</p>
-                </div>
-            `;
-            
-            // Inserir a mensagem antes do formulário de login
-            loginContainer.insertBefore(confirmMessage, loginForm);
-            
-            // Remover a mensagem após 10 segundos
-            setTimeout(() => {
-                if (confirmMessage.parentNode) {
-                    confirmMessage.parentNode.removeChild(confirmMessage);
-                }
-            }, 10000);
-        });
-    } else {
-        showPopup('Ops! Algo deu errado no cadastro. Tente novamente 😕', 'error');
-    }
-});
+registerForm.addEventListener('submit', registerUser);
 
 // Login de usuário
 loginForm.addEventListener('submit', (e) => {
@@ -372,9 +234,8 @@ window.clearUserDatabase = function(clearAllData = false) {
         // Obter lista atual de usuários
         const currentUsers = JSON.parse(localStorage.getItem('users') || '[]');
         
-        // Remover usuários específicos (diegocorreapereira93@hotmail.com e user@user.com)
+        // Remover usuários específicos (user@user.com)
         const filteredUsers = currentUsers.filter(user => 
-            user.email.toLowerCase() !== 'diegocorreapereira93@hotmail.com' && 
             user.email.toLowerCase() !== 'user@user.com'
         );
         
@@ -412,4 +273,83 @@ window.clearUserDatabase = function(clearAllData = false) {
 // Executar limpeza imediatamente
 (function() {
     window.clearUserDatabase();
-})(); 
+})();
+
+// Modificar a função de registro para não enviar email
+function registerUser(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('register-name').value.trim();
+    const email = document.getElementById('register-email').value.trim();
+    const password = document.getElementById('register-password').value.trim();
+    
+    if (!name || !email || !password) {
+        showPopup('Por favor, preencha todos os campos', 'error');
+        return;
+    }
+    
+    if (findUser(email)) {
+        showPopup('Este email já está cadastrado', 'error');
+        return;
+    }
+    
+    const user = { name, email, password };
+    
+    // Salvar usuário
+    saveUser(user);
+    
+    // Mostrar mensagem de sucesso
+    showPopup(`
+        <h3>Cadastro realizado com sucesso!</h3>
+        <p><strong>Nome:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Senha:</strong> ${password}</p>
+        <p><strong>IMPORTANTE:</strong> Guarde sua senha em um local seguro. Ela não pode ser recuperada.</p>
+    `, 'success');
+    
+    // Limpar formulário
+    document.getElementById('register-form').reset();
+    
+    // Voltar para o formulário de login
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    
+    // Preencher o campo de email para facilitar o login
+    document.getElementById('email').value = email;
+}
+
+// Modificar a função de exclusão de usuários para remover emails específicos
+function deleteAllUsers() {
+    // Obter todos os usuários
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    // Filtrar para manter apenas o admin e remover emails específicos
+    const filteredUsers = users.filter(user => 
+        user.email.toLowerCase() !== 'admin@listadetarefas.com'
+    );
+    
+    // Salvar usuários filtrados
+    localStorage.setItem('users', JSON.stringify(filteredUsers));
+    
+    // Adicionar o admin se não existir
+    const adminUser = {
+        name: "Administrador",
+        email: "admin@listadetarefas.com",
+        password: "Admin@2024!"
+    };
+    
+    const adminExists = filteredUsers.some(user => user.email.toLowerCase() === adminUser.email.toLowerCase());
+    
+    if (!adminExists) {
+        filteredUsers.push(adminUser);
+        localStorage.setItem('users', JSON.stringify(filteredUsers));
+    }
+    
+    // Limpar usuário atual
+    localStorage.removeItem('currentUser');
+    
+    // Redirecionar para a página de login
+    window.location.href = 'login.html';
+    
+    console.log('Admin credentials - Email: admin@listadetarefas.com, Password: Admin@2024!');
+} 

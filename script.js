@@ -263,8 +263,13 @@ taskInput.addEventListener('keypress', (e) => {
 document.getElementById('user-name').textContent = `Olá, ${currentUser.name}`;
 
 // Logout
-document.getElementById('logout-button').addEventListener('click', () => {
+document.getElementById('logout-button').addEventListener('click', async () => {
+    // Opcional: Cancelar inscrição push antes de limpar dados locais
+    await unsubscribeUserFromPush();
+    
     localStorage.removeItem('currentUser');
+    // Opcional: Limpar outros dados relacionados ao usuário se necessário
+    // localStorage.removeItem(`tasks_${currentUser.email}`);
     window.location.href = 'login.html';
 });
 
@@ -513,4 +518,167 @@ window.addEventListener('DOMContentLoaded', () => {
     // Verificar tarefas vencidas a cada minuto
     checkOverdueTasks();
     setInterval(checkOverdueTasks, 60000);
+
+    // Registrar o Service Worker e tentar inscrever para Push
+    registerServiceWorker();
+
+    // Atualizar nome do usuário
+    if (currentUser && currentUser.name) {
+        document.getElementById('user-name').textContent = `Olá, ${currentUser.name}`;
+    } else {
+        console.warn('Nome do usuário não encontrado em currentUser.');
+        // Lidar com caso onde nome não está disponível
+    }
 });
+
+let serviceWorkerRegistration = null;
+
+// Chave pública VAPID (GERADA NO SEU BACKEND! Substitua esta chave de exemplo)
+const vapidPublicKey = 'BAa_YOUR_PUBLIC_VAPID_KEY_HERE_REPLACE_ME_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'; // Substitua pela sua chave pública real!
+
+// Função para converter a chave VAPID de base64 para Uint8Array
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+// Função para registrar o Service Worker
+async function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+        console.warn('Service Worker não suportado neste navegador.');
+        return;
+    }
+    try {
+        const registration = await navigator.serviceWorker.register('service-worker.js');
+        console.log('Service Worker registrado com sucesso:', registration);
+        serviceWorkerRegistration = registration; // Guarda a referência
+        // Tenta inscrever o usuário imediatamente após o registro bem-sucedido do SW
+        // Isso garante que a inscrição ocorra após o SW estar pronto.
+        await subscribeUserToPush();
+    } catch (error) {
+        console.error('Falha ao registrar o Service Worker:', error);
+    }
+}
+
+// Função para solicitar permissão e inscrever para Push Notifications
+async function subscribeUserToPush() {
+    if (!serviceWorkerRegistration) {
+        console.warn('Service Worker ainda não registrado. Tentando registrar novamente.');
+        // Tenta registrar novamente se a referência não estiver disponível
+        await registerServiceWorker();
+        if (!serviceWorkerRegistration) {
+             console.error('Não foi possível registrar o Service Worker para inscrição.');
+             return;
+        }
+    }
+
+    // Verifica se já existe uma inscrição
+    const existingSubscription = await serviceWorkerRegistration.pushManager.getSubscription();
+    if (existingSubscription) {
+        console.log('Usuário já inscrito:', existingSubscription);
+        // Opcional: Enviar a inscrição existente para o backend novamente,
+        // caso o backend tenha perdido por algum motivo.
+        // sendSubscriptionToBackend(existingSubscription);
+        return; // Já inscrito, não precisa fazer nada
+    }
+
+    // Solicitar permissão
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+        console.warn('Permissão para notificações não concedida.');
+        showPopup('Permissão de notificação negada. Você não receberá alertas push.', 'warning');
+        return;
+    }
+
+    // Tentar inscrever o usuário
+    try {
+        const applicationServerKey = urlBase64ToUint8Array(vapidPublicKey);
+        const subscription = await serviceWorkerRegistration.pushManager.subscribe({
+            userVisibleOnly: true, // Requerido, indica que as notificações serão visíveis ao usuário
+            applicationServerKey: applicationServerKey
+        });
+        console.log('Usuário inscrito com sucesso:', subscription);
+
+        // !! IMPORTANTE: Enviar a inscrição (subscription) para o seu backend !!
+        await sendSubscriptionToBackend(subscription);
+
+    } catch (error) {
+        console.error('Falha ao inscrever o usuário para push:', error);
+        if (Notification.permission === 'denied') {
+             console.warn('A permissão foi negada após a tentativa de inscrição.');
+             showPopup('Permissão de notificação foi bloqueada durante o processo.', 'error');
+        } else {
+             console.error('Erro inesperado durante a inscrição:', error);
+             showPopup('Ocorreu um erro ao ativar as notificações push.', 'error');
+        }
+    }
+}
+
+// Função para enviar a inscrição para o backend (IMPLEMENTE ESTA FUNÇÃO!)
+async function sendSubscriptionToBackend(subscription) {
+    console.log('Enviando inscrição para o backend (simulado):', subscription);
+    // Este é o ponto onde você faria uma requisição HTTP (POST) para o seu servidor
+    // Substitua '/api/subscribe' pelo endpoint real do seu backend
+    try {
+        const response = await fetch('/api/subscribe', { // <-- SUBSTITUA PELO SEU ENDPOINT
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                subscription: subscription,
+                userId: currentUser.email // Envie um identificador do usuário
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro do servidor: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('Inscrição enviada com sucesso para o backend:', data);
+        showPopup('Notificações Push ativadas com sucesso!', 'success');
+
+    } catch (error) {
+        console.error('Erro ao enviar inscrição para o backend:', error);
+        showPopup('Falha ao comunicar com o servidor para ativar notificações.', 'error');
+        // Aqui você pode querer tentar reenviar mais tarde ou notificar o usuário
+        // de forma mais persistente.
+    }
+}
+
+// Função para cancelar a inscrição (opcional, útil para logout ou configurações)
+async function unsubscribeUserFromPush() {
+    if (!serviceWorkerRegistration) {
+        console.warn('Service Worker não registrado para cancelar inscrição.');
+        return;
+    }
+    try {
+        const subscription = await serviceWorkerRegistration.pushManager.getSubscription();
+        if (subscription) {
+            await subscription.unsubscribe();
+            console.log('Inscrição cancelada com sucesso.');
+
+            // !! IMPORTANTE: Notifique seu backend para remover a inscrição !!
+            // await sendUnsubscriptionToBackend(subscription.endpoint); 
+            showPopup('Notificações Push desativadas.', 'info');
+        } else {
+            console.log('Nenhuma inscrição encontrada para cancelar.');
+        }
+    } catch (error) {
+        console.error('Erro ao cancelar inscrição:', error);
+        showPopup('Erro ao desativar notificações push.', 'error');
+    }
+}
+
+// ----- Fim das Funções de Notificação Push -----

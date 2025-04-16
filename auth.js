@@ -298,14 +298,215 @@ function registerUser(event) {
     // Salvar usuário
     saveUser(user);
     
-    // Mostrar mensagem de sucesso
-    showPopup(`
-        <h3>Cadastro realizado com sucesso!</h3>
-        <p><strong>Nome:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Senha:</strong> ${password}</p>
-        <p><strong>IMPORTANTE:</strong> Guarde sua senha em um local seguro. Ela não pode ser recuperada.</p>
-    `, 'success');
+    // Mostrar modal de cadastro com sucesso (sem fechamento automático)
+    const modalHTML = `
+        <div id="registration-success-modal" class="registration-modal">
+            <div class="modal-content">
+                <div class="success-header">
+                    <div class="check-icon">✓</div>
+                    <h3>Cadastro realizado com sucesso!</h3>
+                </div>
+                
+                <div class="credentials-container">
+                    <div class="credential-item">
+                        <div class="credential-icon user-icon">👤</div>
+                        <div class="credential-info">
+                            <div class="credential-label">Nome:</div>
+                            <div class="credential-value">${name}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="credential-item">
+                        <div class="credential-icon email-icon">📧</div>
+                        <div class="credential-info">
+                            <div class="credential-label">Email:</div>
+                            <div class="credential-value">${email}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="credential-item password-item">
+                        <div class="credential-icon password-icon">🔐</div>
+                        <div class="credential-info">
+                            <div class="credential-label">Senha:</div>
+                            <div class="credential-value">${password}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-text">IMPORTANTE: Guarde sua senha em um local seguro. Ela não pode ser recuperada.</div>
+                </div>
+                
+                <button id="close-registration-modal" class="close-button">Entendi</button>
+            </div>
+        </div>
+    `;
+    
+    // Remover qualquer modal existente
+    const existingModal = document.getElementById('registration-success-modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Inserir o HTML do modal no body
+    const modalContainer = document.createElement('div');
+    modalContainer.innerHTML = modalHTML;
+    document.body.appendChild(modalContainer.firstElementChild);
+    
+    // Adicionar os estilos para o modal
+    const modalStyle = document.createElement('style');
+    modalStyle.textContent = `
+        .registration-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .modal-content {
+            background-color: #1c313a;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .success-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+        
+        .check-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .success-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .credentials-container {
+            background-color: #253740;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid #4CAF50;
+        }
+        
+        .credential-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .credential-icon {
+            margin-right: 10px;
+            font-size: a8px;
+            min-width: 24px;
+        }
+        
+        .credential-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .credential-label {
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-bottom: 2px;
+        }
+        
+        .credential-value {
+            font-size: 14px;
+            color: #ffffff;
+        }
+        
+        .password-item {
+            background-color: #2c4f3d;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .warning-box {
+            display: flex;
+            align-items: flex-start;
+            background-color: #3d3224;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .warning-icon {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .warning-text {
+            font-size: 12px;
+            color: #ffc107;
+        }
+        
+        .close-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            width: 100%;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .close-button:hover {
+            background-color: #3e8e41;
+        }
+    `;
+    document.head.appendChild(modalStyle);
+    
+    // Adicionar evento de clique ao botão de fechar
+    document.getElementById('close-registration-modal').addEventListener('click', function() {
+        const modal = document.getElementById('registration-success-modal');
+        if (modal) {
+            modal.classList.add('fade-out');
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        }
+    });
+    
+    // Lançar confetti para celebrar o cadastro
+    if (window.confetti) {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
     
     // Limpar formulário
     document.getElementById('register-form').reset();

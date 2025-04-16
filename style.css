@@ -998,13 +998,16 @@ h1::after {
 /* Smartphones pequenos */
 @media (max-width: 480px) {
     body {
-        padding: 10px 0;
+        padding: 10px;
+        align-items: flex-start;
     }
     
     .container {
-        width: 100%;
+        width: 95%;
         padding: 15px;
+        margin-top: 20px;
         border-radius: 15px;
+        max-height: 90vh;
     }
     
     h1 {
@@ -1013,13 +1016,12 @@ h1::after {
     }
     
     .task-buttons {
-        flex-wrap: wrap;
         gap: 5px;
     }
     
     .delete-button, .share-button, .date-button {
-        padding: 6px 8px;
-        font-size: 0.8em;
+        padding: 8px;
+        font-size: 0.9em;
     }
     
     .task-date {
@@ -1028,25 +1030,82 @@ h1::after {
     
     .task-text {
         font-size: 0.95em;
+        line-height: 1.4;
     }
     
     #task-input {
-        font-size: 0.95em;
         padding: 12px;
+        font-size: 0.95em;
     }
     
     .action-buttons {
-        flex-direction: column;
+        display: flex;
         gap: 5px;
-        align-items: center;
+        flex-wrap: nowrap;
     }
     
     .header-container {
-        margin-bottom: 15px;
+        padding: 10px;
     }
     
-    .planet, .planet-ring {
-        opacity: 0.4;
+    .task-item {
+        padding: 12px;
+        margin-bottom: 10px;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .action-controls {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+    
+    #logout-button, #group-button, #sort-button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+        min-width: auto;
+    }
+    
+    .add-task {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    
+    #add-button {
+        padding: 12px 15px;
+        font-size: 0.9em;
+    }
+    
+    #task-list {
+        padding-right: 2px;
+    }
+}
+
+@media (max-width: 360px) {
+    .container {
+        width: 98%;
+        padding: 12px;
+    }
+    
+    h1 {
+        font-size: 1.6em;
+    }
+    
+    .task-item {
+        padding: 10px;
+    }
+    
+    .action-buttons {
+        gap: 3px;
+    }
+    
+    .delete-button, .share-button, .date-button {
+        padding: 6px;
+        font-size: 0.85em;
     }
 }
 
